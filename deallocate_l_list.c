@@ -1,3 +1,4 @@
+#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -31,6 +32,18 @@ void	insert_end(Node **root, int value)
 
 }
 
+void	deallocate_list(Node **root)
+{
+	Node	*curr = *root;
+	while (curr != NULL)
+	{
+		Node	*aux = curr;
+		curr = curr -> next;
+		free (aux);
+	}
+	*root = NULL;
+}
+
 int		main()
 {
 	//Node *root = NULL; //if list is empty
@@ -49,6 +62,8 @@ int		main()
 		printf("%d\n", curr -> x);
 		curr = curr -> next;
 	}
+
+	deallocate_list(&root);
 	check_leaks();
 	return (0);
 }
