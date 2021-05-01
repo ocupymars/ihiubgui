@@ -119,3 +119,61 @@ void	remove_element(Node **root, int value)
 		}
 	}
 }
+
+void	reverse_list(Node **root)
+{
+	Node	*prev;
+	Node	*curr;
+	Node	*after;
+
+	prev = NULL;
+	curr = *root;
+	while (curr != NULL)
+	{
+		after = curr -> next;
+		curr -> next = prev;
+		prev = curr;
+		curr = after;	
+	}
+	*root = prev;
+}
+
+int	has_loops(Node *root)
+{
+	Node	*slow;
+	Node	*fast;
+
+	slow = root;
+	fast = root;
+	while (slow != NULL && fast != NULL && fast -> next != NULL)
+	{
+		slow = slow-> next;
+		fast = fast -> next -> next;
+
+		if (slow == fast)
+			return (1);
+	}
+	return (0);
+}
+
+int	count(Node *root)
+{
+	Node	*curr;
+	int		c;
+
+	c = 0;
+	curr = root;
+	while (curr != NULL)
+	{
+		curr = curr -> next;
+		c++;
+	}
+	return (c);
+}
+
+int	count_recursive(Node *node)
+{
+	if (node == NULL)
+		return (0);
+	return (1 + count_recursive(node -> next));
+}

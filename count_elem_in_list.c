@@ -9,40 +9,42 @@
 
 void	check_leaks();
 void	deallocate_list(Node **root);
-void	insert_beginning(Node **root, int value);
-void	insert_after_node(Node *node, int value);
 void	insert_end(Node **root, int value);
-void	insert_sorted(Node **root, int value);
-void	remove_element(Node **root, int value);
 
-void	reverse_list(Node **root)
+int	count(Node *root)
 {
-	Node	*prev;
 	Node	*curr;
-	Node	*after;
+	int		c;
 
-	prev = NULL;
-	curr = *root;
+	c = 0;
+	curr = root;
 	while (curr != NULL)
 	{
-		after = curr -> next;
-		curr -> next = prev;
-		prev = curr;
-		curr = after;	
+		curr = curr -> next;
+		c++;
 	}
-	*root = prev;
+	return (c);
+}
+
+int	count_recursive(Node *node)
+{
+	if (node == NULL)
+		return (0);
+	return (1 + count_recursive(node -> next));
 }
 
 int		main()
 {
 	Node *root = NULL; //if list is empty
 	
+	insert_end(&root, 16);
 	insert_end(&root, 15);
 	insert_end(&root, 14);
+	insert_end(&root, 13);
 	insert_end(&root, 12);
-	insert_sorted(&root, 13);
-	reverse_list(&root);
+	insert_end(&root, 11);
 
+	printf("Linked list has %d elements\n", count_recursive(root));
 	Node *curr = root;
 	while (curr != NULL)
 	{
