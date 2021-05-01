@@ -1,22 +1,65 @@
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef struct Node
+ typedef struct Node
 {
 	int		x;
 	struct Node* next;
 } Node;
 
-int		main()
-{
-	Node root;
-	root.x = 15;
-	root.next = malloc(sizeof(Node));
-	root.next->x = -2;
-	root.next->next = NULL;
+void	check_leaks();
 
-	printf("%d\n%d\n", root.x, root.next->x);
-	printf("%d\n%d\n", root.x, (*root.next).x);
-	free(root.next);
-	return (0);
+void	deallocate_list(Node **root)
+{
+	Node	*curr = *root;
+	while (curr != NULL)
+	{
+		Node	*aux = curr;
+		curr = curr -> next;
+		free (aux);
+	}
+	*root = NULL;
+}
+
+void	insert_beginning(Node **root, int value)
+{
+	Node	*new_node = malloc (sizeof(Node));
+	if (new_node == NULL)
+	{
+		exit (3);
+	}
+	new_node -> x = value;
+	new_node -> next = *root;
+	*root = new_node;
+}
+
+void	insert_after_node(Node *node, int value)
+{
+	Node *new_node =  malloc (sizeof(Node));
+	if (new_node == NULL)
+		exit (4);
+	new_node -> x = value;
+	new_node -> next = node -> next;
+	node -> next = new_node;
+}
+
+void	insert_end(Node **root, int value)
+{
+	Node *new_node = malloc (sizeof(Node));
+	if (new_node ==  NULL)
+		exit(1);
+	new_node -> next = NULL;
+	new_node -> x = value;
+
+	if (*root == NULL)
+	{
+		*root = new_node;
+		return;
+	}
+	Node *curr = *root;
+	while (curr -> next != NULL)
+	{
+		curr = curr -> next;
+	}
+	curr -> next = new_node;
 }
